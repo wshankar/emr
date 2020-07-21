@@ -37,7 +37,7 @@
                 <div class="form-group col-md-9">
                     <button v-show="!editmode" type="submit" class="btn btn-primary btn-block">Add Patient</button>
                     <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
-                    <a href="#" @click="newModal" v-show="editmode" class="btn btn-primary">Add New</a>
+                    <a href="#" @click="newModal" v-show="editmode" class="btn btn-primary">Cancel</a>
                 </div>
             </div>
         </form>
@@ -228,6 +228,7 @@ import Booked from './Booked'
                         icon: 'success',
                         title: 'Record Updated'
                         })
+                   this.editmode = false
                })
                .catch(() => {this.$Progress.fail()})
             },

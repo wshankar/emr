@@ -35,10 +35,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/booking">Booking</router-link>
+          <router-link class="nav-link" to="/pharmacy">Pharmacy</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
+          <router-link class="nav-link" to="/pharmacysale">Pharmacy Sale</router-link>
         </li>
   
         <!-- Dropdown -->

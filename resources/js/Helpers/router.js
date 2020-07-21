@@ -4,13 +4,15 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
 import Dashboard from '../components/Dashboard.vue'
-import Booking from '../components/Booking.vue'
+import Pharmacy from '../components/Pharmacy/Pharmacy.vue'
+import PharmacySale from '../components/Pharmacy/PharmacySale.vue'
 import PatientShow from '../components/PatientShow.vue'
 import Revenue from '../components/Revenue.vue'
 
 const routes = [
     { path: '/', component: Dashboard },
-    { path: '/booking', component: Booking },
+    { path: '/pharmacy', component: Pharmacy },
+    { path: '/pharmacysale', component: PharmacySale },
     { path: '/patient/:slug',  component: PatientShow },
     { path: '/patient/:slug', name:'PatientShow', component: PatientShow, params:true },
     { path: '/revenue', component: Revenue },

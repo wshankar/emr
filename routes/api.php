@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('patient', 'PatientController');
 Route::apiResource('patient/{patient_id}/treatment', 'TreatmentController');
+Route::apiResource('pharmacy', 'PharmacyController');
 Route::get('profile', 'PatientController@profile');
 Route::get('findPatient', 'PatientController@search');
 Route::post('notification','NotificationController@index');

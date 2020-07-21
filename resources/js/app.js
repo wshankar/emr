@@ -26,9 +26,9 @@ Vue.prototype.$gate = new Gate(window.user);
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component('pagination', require('laravel-vue-pagination'));
-Vue.component('notification', require('./components/Notification.vue').default);
-Vue.component('booking', require('./components/BookingNoti.vue').default);
-Vue.component('consult', require('./components/ConsultNoti.vue').default);
+Vue.component('notification', require('./components/Notification/Notification.vue').default);
+Vue.component('booking', require('./components/Notification/BookingNoti.vue').default);
+Vue.component('consult', require('./components/Notification/ConsultNoti.vue').default);
 
 
 
