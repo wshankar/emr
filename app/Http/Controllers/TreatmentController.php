@@ -35,11 +35,13 @@ class TreatmentController extends Controller
     {
         $this->validate($request, [
              'prescription' => 'required',
-             'fees' => 'required'
+             'fees' => 'required',
+             'follow_up' => 'required'
         ]);
         $treatment = new Treatment;
         $treatment->prescription = $request->input('prescription');
         $treatment->fees = $request->input('fees');
+        $treatment->follow_up = Carbon::parse($request->input('follow_up'))->format('Y-m-d');
         $treatment->patient_id = $id;
         $treatment->save();
         $users = User::where('id','!=', 1)->get();
@@ -136,4 +138,13 @@ class TreatmentController extends Controller
 
         return $data;
     }
+
+    // public function deleteFollowup(Patient $patient, $patient_id, $treatmentId)
+    // {
+    //     $followupDates = $patient->treatments()->whereNotIn('id', $treatmentId)->get();
+    //     // $followupDates = Treatment::where('patient_id', $patient_id)
+    //     //                 ->whereNotIn('id', $treatmentId)->get();
+    //     // $followupDates->each->update('follow_up' , '');
+    //     return $followupDates;
+    // }
 }

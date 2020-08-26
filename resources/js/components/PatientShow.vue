@@ -32,6 +32,7 @@
                 {{treatment.prescription}} <br>
                 <div class="mt-3">
                     <button class="btn btn-warning">{{treatment.fees}} Kyats</button>
+                    <button class="btn btn-success">{{treatment.follow_up | myDate}}</button>
                     <div class="float-right" v-show="$gate.isCounterOrDoctor()">
                         <a href="#" @click="copyTreatment(treatment)"><i class="fas fa-copyright fa-lg green"></i></a>
                         <a href="#" class="iconspace" @click="editTreatment(treatment)"><i class="fas fa-pen-square fa-lg text-primary"></i></a>
@@ -73,12 +74,17 @@
                         <has-error :form="form" field="prescription"></has-error>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-10">
+                        <div class="form-group col-md-5">
                             <input v-model="form.fees" type="text" name="fees" placeholder="Total Fees"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('fees') }">
                             <has-error :form="form" field="fees"></has-error>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div>
+                            <datepicker  v-model="form.follow_up" type="text" name="follow_up"
+                             :class="{ 'is-invalid': form.errors.has('follow_up') }"></datepicker>
+                            <has-error :form="form" field="follow_up"></has-error>
+                        </div>
+                        <div class="form-group col-md-4">
                             <button v-show="!editmode" type="submit" class="btn btn-success">Add Record</button>
                             <button v-show="editmode" type="submit" class="btn btn-success">Update Record</button>
                             <a v-show="editmode" class="btn btn-success" @click="cancel">Cancel</a>
@@ -92,9 +98,11 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
 export default {
+    components:{Datepicker},
     data(){
-        return{
+        return{            
             editmode: false,
             patient:{},
             treatments:{},
@@ -102,7 +110,8 @@ export default {
             form: new Form({
                 id: '',
                 prescription :'',
-                fees: ''
+                fees: '',
+                follow_up: '',
             })
         }
     },

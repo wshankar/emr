@@ -4,7 +4,7 @@
           Booking
           <span class="badge badge-danger">{{bookCount}}</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" v-if="bookCount">
           <a href="#" class="dropdown-item" v-for="item in booking" :key="item.id">
 
             <div class="media">
@@ -13,6 +13,19 @@
                   <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                 </h3>
                 <p class="text-sm">{{item.patientName}}</p>
+              </div>
+            </div>
+
+          </a>  
+        </div> 
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" v-else>
+          <a href="#" class="dropdown-item" v-for="item in booking" :key="item.id">
+
+            <div class="media">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  No Booking
+                </h3>
               </div>
             </div>
 
@@ -33,6 +46,7 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div> -->
       </li>
+
 </template>
 
 <script>

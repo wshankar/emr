@@ -10,10 +10,9 @@
 
             <div class="media">
               <div class="media-body">
-                <h3 class="dropdown-item-title">
-                    <p class="text-sm" >{{item.patientName}}</p>
-                <router-link :to="{name:'PatientShow', params:{slug:item.path}}" class="dropdown-item">
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star" @click="deletePatient(index)"></i></span>
+                <h3 class="dropdown-item-title" @click="deletePatient(index)">       
+                <router-link  :to="{name:'PatientShow', params:{slug:item.path}}" class="dropdown-item">
+                  {{item.patientName}}
                 </router-link> 
                 </h3>
                 

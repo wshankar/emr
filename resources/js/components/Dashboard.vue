@@ -1,30 +1,25 @@
 <template>
-    <div class="container-fluid row">
-        <div class="col-md-9">
+    <div class="container-fluid row pr-0">
+        <div class="col-md-10 px-0">
             <!-- SEARCH FORM -->
         <form @submit.prevent="editmode ? updatePatient(): addPatient()">
            <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 pr-0">
                     <input v-model="form.name" @keyup="searchit" type="text" name="name" placeholder="Patient Name"
                     class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                     <has-error :form="form" field="name"></has-error>
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-1 pr-0">
                     <input v-model="form.age" type="text" name="age" placeholder="Age"
                     class="form-control" :class="{ 'is-invalid': form.errors.has('age') }">
                     <has-error :form="form" field="age"></has-error>
                     </div>
-                <div class="form-group col-md-2">
-                    <input v-model="form.gender" type="text" name="gender" placeholder="Gender"
+                <div class="form-group col-md-1 pr-0">
+                    <input v-model="form.gender" type="text" name="gender" placeholder="M / F"
                     class="form-control" :class="{ 'is-invalid': form.errors.has('gender') }">
                     <has-error :form="form" field="gender"></has-error>
                     </div>
-                    <div class="form-group col-md-3">
-                    <input v-model="form.fatherName" type="text" name="fatherName" placeholder="Father Name"
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('fatherName') }">
-                    <has-error :form="form" field="fatherName"></has-error>
-                </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 pr-0">
                     <input v-model="form.address" type="text" name="address" placeholder="Address"
                     class="form-control" :class="{ 'is-invalid': form.errors.has('address') }">
                     <has-error :form="form" field="address"></has-error>
@@ -34,10 +29,10 @@
                     class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }">
                     <has-error :form="form" field="phone"></has-error>
                 </div>
-                <div class="form-group col-md-9">
-                    <button v-show="!editmode" type="submit" class="btn btn-primary btn-block">Add Patient</button>
-                    <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
-                    <a href="#" @click="newModal" v-show="editmode" class="btn btn-primary">Cancel</a>
+                <div class="form-group">
+                    <button v-show="!editmode" type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i></button>
+                    <button v-show="editmode" type="submit" class="btn btn-success"><i class="fa fa-user-edit"></i></button>
+                    <a href="#" @click="newModal" v-show="editmode" class="btn btn-secondary"><i class="fa fa-window-close"></i></a>
                 </div>
             </div>
         </form>
@@ -48,9 +43,9 @@
                 <h3 class="card-title">Patient Records</h3>
 
                 <div class="card-tools">
-                    <button v-show="editmode" type="button" class="btn btn-success" @click="newModal">
-                        Add New <i class="fas fa-hospital-user"></i>
-                    </button>
+                    <datepicker  type="text" typeable="true" v-model="searchByFollowUp" @input="searchFollowUp" name="follow_up" placeholder="Search By Follow Up"
+                    >
+                    </datepicker>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -62,7 +57,7 @@
                       <th>Name</th>
                       <th>Age</th>
                       <th>Gender</th>
-                      <th>Father Name</th>
+                      <th>Follow Up</th>
                       <th>Address</th>
                       <th>Phone Number</th>
                       <!-- <th>Registered</th> -->
@@ -78,7 +73,7 @@
                       </td>
                       <td>{{ patient.age }}</td>
                       <td>{{ patient.gender }}</td>
-                      <td>{{ patient.fatherName }}</td>
+                      <td>{{ patient.followUp | myDate }}</td>
                       <td>{{ patient.address }}</td>
                       <td>{{ patient.phone }}</td>
                       <!-- <td>{{ patient.created_at | myDate }}</td> -->
@@ -166,7 +161,7 @@
     </div>
 </div> -->
 </div>
-    <div class="col-md-3">
+    <div class="col-md-2 pr-0">
         <booking-list></booking-list>
     </div>
     </div>
@@ -174,12 +169,14 @@
 
 
 <script>
+import Datepicker from 'vuejs-datepicker';
 import BookingList from './BookingList'
 import Booked from './Booked'
     export default {
-        components:{Booked,BookingList},
+        components:{Booked,BookingList,Datepicker},
         data (){
             return {
+                searchByFollowUp:'',
                 booked:'',
                 editmode: '',
                 patients:{},
@@ -189,8 +186,7 @@ import Booked from './Booked'
                     age: '',
                     gender: '',
                     address: '',
-                    phone:'',
-                    fatherName:''
+                    phone:''
                 })
             }
         },
@@ -205,6 +201,13 @@ import Booked from './Booked'
                 })
             })
             },
+            searchFollowUp:_.debounce(function(){
+                let query= this.searchByFollowUp;
+                axios.post('api/findByFollowUp', {q:query})
+                .then((data) => {
+                    this.patients = data.data
+                })
+            },500),
             searchit:_.debounce(function(){
                 let query= this.form.name;
                 axios.get('api/findPatient?q='+query)

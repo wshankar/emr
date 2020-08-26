@@ -6,8 +6,12 @@ use App\Events\PatientEvent;
 use App\Http\Resources\PatientResource;
 use App\Notifications\BookingNoti;
 use App\Patient;
+use App\Treatment;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Laravel\Ui\Presets\React;
 
 class PatientController extends Controller
 {
@@ -28,7 +32,8 @@ class PatientController extends Controller
      */
     public function index()
     {
-        return PatientResource::collection(Patient::latest()->paginate(5));
+        return PatientResource::collection(Patient::latest()->paginate(7));
+        
     }
 
     /**
@@ -45,7 +50,6 @@ class PatientController extends Controller
             'gender' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'fatherName' => 'required'
         ]);
 
         $patient= Patient::create([
@@ -54,7 +58,6 @@ class PatientController extends Controller
             'gender' => $request['gender'],
             'address' => $request['address'],
             'phone' => $request['phone'],
-            'fatherName' => $request['fatherName']
         ]);
         $user = User::where('id','=', 1)->get();
         broadcast(new PatientEvent($patient));
@@ -88,7 +91,6 @@ class PatientController extends Controller
             'gender' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'fatherName' => 'required'
         ]);
         
         $patient = Patient::findOrFail($id);
@@ -115,18 +117,59 @@ class PatientController extends Controller
         return auth('api')->user();
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        if ($search = \Request::get('q')) {
+        if ($search = $request->get('q')) {
             $users = Patient::where(function($query) use ($search){
                 $query->where('name', 'Like', "%$search%")
-                      ->orWhere('address', 'Like', "%$search%")
-                      ->orWhere('fatherName', 'Like', "%$search%");
-            })->paginate(5);
+                      ->orWhere('age', 'Like', "%$search%")
+                      ->orWhere('address', 'Like', "%$search%");
+            })->paginate(7);
         }else{
-            $users = Patient::latest()->paginate(5);
+            $users = Patient::latest()->paginate(7);
         }
         
         return PatientResource::collection($users);
     } 
+
+   public function findByFollowUp(Request $request)
+   {
+       $search = Carbon::parse($request->get('q'))->format('Y-m-d');
+           $users = Treatment::where('follow_up', 'LIKE', "%$search%")->get('patient_id');
+          foreach ($users as $user) {
+              $id= $user['patient_id'];
+              $patients =  Patient::where('id', '=', "$id")->get();
+              
+              return PatientResource::collection($patients);
+          }
+        //   foreach ($users as $key => $user) {
+        //       $id = $key[$user];
+        //       return $key;
+        //   }
+       
+   }
+
+    // public function index(Request $request)
+    // {
+    //     if ( $request->input('showdata') ) {
+    //         return Patient::orderBy('created_at', 'desc')->get();
+    //         }
+    //         $columns = ['name', 'age','gender', 'address', 'created_at'];
+    //         $length = $request->input('length');
+    //         $column = $request->input('column');
+    //         $search_input = $request->input('search');
+    //         $query = Patient::select('name', 'age', 'gender', 'address')
+    //         ->orderBy($columns[$column]);
+    //         if ($search_input) {
+    //         $query->where(function($query) use ($search_input) {
+    //         $query->where('name', 'like', '%' . $search_input . '%')
+    //         ->orWhere('age', 'like', '%' . $search_input . '%')
+    //         ->orWhere('gender', 'like', '%' . $search_input . '%')
+    //         ->orWhere('address', 'like', '%' . $search_input . '%');
+    //         });
+    //         }
+    //         $patients = $query->paginate($length);
+    //         return ['data' => $patients];
+            
+    // }
 }

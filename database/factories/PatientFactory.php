@@ -14,6 +14,5 @@ $factory->define(Patient::class, function (Faker $faker) {
         'gender' => $gender,
         'address' => $faker->address,
         'phone' => $faker->phoneNumber,
-        'fatherName' => $faker->name,
     ];
 });

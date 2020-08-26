@@ -7,7 +7,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class Patient extends Model
 {
-    protected $fillable= ['name','age','gender','address','phone','fatherName'];
+    protected $fillable= ['name','age','gender','address','phone'];
 
     protected $with = ['treatments'];
 
@@ -25,5 +25,10 @@ class Patient extends Model
     public function booking()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function getFollowupAttribute()
+    {
+        return $this->treatments()->latest('follow_up')->first('follow_up');
     }
 }

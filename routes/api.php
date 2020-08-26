@@ -23,6 +23,7 @@ Route::apiResource('patient/{patient_id}/treatment', 'TreatmentController');
 Route::apiResource('pharmacy', 'PharmacyController');
 Route::get('profile', 'PatientController@profile');
 Route::get('findPatient', 'PatientController@search');
+Route::post('findByFollowUp', 'PatientController@findByFollowUp');
 Route::post('notification','NotificationController@index');
 Route::post('notification','NotificationController@index');
 Route::post('markAsRead','NotificationController@markAsRead');
@@ -34,6 +35,8 @@ Route::post('/bookedpatient','BookingController@bookedPatient');
 Route::get('/dailyincome','TreatmentController@dailyIncome');
 Route::get('/monthlyincome','TreatmentController@getMonthlySum');
 Route::get('/yearlyincome','TreatmentController@yearlyIncome');
+Route::put('followup/{patient_id}/treatment/{id}', 'TreatmentController@deleteFollowup');
+
 
 
 

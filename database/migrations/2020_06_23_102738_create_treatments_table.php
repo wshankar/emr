@@ -18,6 +18,7 @@ class CreateTreatmentsTable extends Migration
             $table->mediumText('prescription');
             $table->string('fees');
             $table->unsignedInteger('patient_id');
+            $table->string('follow_up');
             $table->timestamps();
         });
     }

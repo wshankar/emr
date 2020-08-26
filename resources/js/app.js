@@ -3,6 +3,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 // Import from Dependicies
+import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 Vue.filter('myDate', function (date) {
   return moment(date).locale('en-sg').format('LL');
@@ -16,6 +17,7 @@ import _ from 'lodash'
 Vue.prototype._ = new _
 
 // Import from Helpers
+import BootstrapVue from './Helpers/Bootstrap-vue'
 import router from './Helpers/router'
 import VueProgressBar from './Helpers/VueProgressBar'
 import SweetAlert from './Helpers/SweetAlert'
@@ -38,6 +40,7 @@ window.Fire = new Vue();
 const app = new Vue({
     el: '#app',
     router,
+    components:{Datepicker}
     // data(){
     //   return{
     //     search: ''
